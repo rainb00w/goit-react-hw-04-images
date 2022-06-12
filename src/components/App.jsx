@@ -45,6 +45,7 @@ const App = () => {
     }
     Fetch();
     handleScroll();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchQuery, page]);
 
   async function Fetch() {

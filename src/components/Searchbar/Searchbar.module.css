@@ -27,12 +27,14 @@
   overflow: hidden;
 }
 
+/* https://upload.wikimedia.org/wikipedia/commons/0/0b/Search_Icon.svg */
+
 .SearchForm_button {
   display: inline-block;
   width: 48px;
   height: 48px;
   border: 0;
-  background-image: url('https://upload.wikimedia.org/wikipedia/commons/0/0b/Search_Icon.svg');
+  background-image: url('https://www.iconpacks.net/icons/2/free-search-icon-3076-thumb.png');
   background-size: 40%;
   background-repeat: no-repeat;
   background-position: center;

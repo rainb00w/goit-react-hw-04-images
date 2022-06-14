@@ -19,6 +19,9 @@ const App = () => {
   const [modalContent, setModalContent] = useState(null);
   const [totalImages, setTotalImages] = useState(0);
 
+  const BASE_URL =
+    'https://pixabay.com/api/?key=26582400-238f4fc38707f184745ce0218&q';
+
   const formSubmitHandler = querry => {
     if (querry === searchQuery) {
       return toast.warn(
@@ -40,35 +43,31 @@ const App = () => {
   };
 
   useEffect(() => {
+    const Fetch = () => {
+      const url = `${BASE_URL}=${searchQuery}&image_type=photo&orientation=horizontal&safesearch=true&per_page=12&page=${page}`;
+      toggleLoading();
+      return axios
+        .get(url)
+        .then(res => {
+          if (!(res.status >= 200 && res.status < 300)) {
+            throw Error(res.statusText);
+          }
+          return res;
+        })
+        .then(res => {
+          setImagesInfo(prevState => [...prevState, ...res.data.hits]);
+          setTotalImages(res.data.totalHits);
+        })
+        .catch(error => setError({ error }))
+        .finally(toggleLoading());
+    };
+
     if (searchQuery === '') {
       return;
     }
     Fetch();
     handleScroll();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchQuery, page]);
-
-  async function Fetch() {
-    const BASE_URL =
-      'https://pixabay.com/api/?key=26582400-238f4fc38707f184745ce0218&q';
-    const url = `${BASE_URL}=${searchQuery}&image_type=photo&orientation=horizontal&safesearch=true&per_page=12&page=${page}`;
-
-    toggleLoading();
-    return axios
-      .get(url)
-      .then(res => {
-        if (!(res.status >= 200 && res.status < 300)) {
-          throw Error(res.statusText);
-        }
-        return res;
-      })
-      .then(res => {
-        setImagesInfo(prevState => [...prevState, ...res.data.hits]);
-        setTotalImages(res.data.totalHits);
-      })
-      .catch(error => setError({ error }))
-      .finally(toggleLoading());
-  }
 
   const increasePage = () => {
     setPage(state => state + 1);
